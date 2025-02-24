@@ -20,7 +20,7 @@ const ArticlePage = () => {
     <div className="bg-gray-100 min-h-screen p-6">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
         <img
-          src={article.image}
+          src="https://akm-img-a-in.tosshub.com/businesstoday/images/story/202501/677ca3a1294b4-air-india-flight-emergency-landing-074635764-16x9.png?size=948:533"
           alt={article.title}
           className="w-full h-64 object-cover rounded-lg"
         />
