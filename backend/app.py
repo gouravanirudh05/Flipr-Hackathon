@@ -17,48 +17,6 @@ CORS(app)
 app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 mongo = PyMongo(app)
 
-def insert_articles():
-    # Sample Articles
-    sample_articles = [
-        {
-            "title": "Local Cricket Tournament in Bengaluru",
-            "description": "A thrilling cricket match was played...",
-            "image": "https://daijiworld.ap-south-1.linodeobjects.com/Linode/images3/mini_20022025_2.jpg",
-            "date": datetime(2025, 2, 22),
-            "category": "sports",
-            "level": "local",
-            "city": "Bengaluru",
-            "country": "India"
-        },
-        {
-            "title": "Global Climate Summit 2025",
-            "description": "World leaders gathered to discuss climate change...",
-            "image": "https://daijiworld.ap-south-1.linodeobjects.com/Linode/images3/mini_20022025_2.jpg",
-            "date": datetime(2025, 3, 1),
-            "category": "politics",
-            "level": "global",
-            "city": "New York",
-            "country": "USA"
-        },
-        {
-            "title": "Tech Startup Raises $10M Funding",
-            "description": "A Bengaluru-based AI startup secured Series A funding...",
-            "image": "https://daijiworld.ap-south-1.linodeobjects.com/Linode/images3/mini_20022025_2.jpg",
-            "date": datetime(2025, 2, 20),
-            "category": "technology",
-            "level": "local",
-            "city": "Bengaluru",
-            "country": "India"
-        }
-    ]
-
-    # Insert sample articles if the collection is empty
-    if mongo.db.articles.count_documents({}) == 0:
-        mongo.db.articles.insert_many(sample_articles)
-        print("✅ Sample articles added to MongoDB")
-
-# insert_articles()
-
 def serialize_article(article):
     """Converts MongoDB ObjectId to a string and formats the date."""
     article["_id"] = str(article["_id"])  # Convert ObjectId to string
@@ -68,9 +26,30 @@ def serialize_article(article):
 
 @app.route('/articles', methods=['GET'])
 def get_articles():
-    """Fetch all articles from MongoDB."""
-    articles = list(mongo.db.articles.find({}))  # Exclude MongoDB _id field
-    return jsonify(articles)
+    articles = mongo.db.articles.find()
+    
+    categorized_articles = {
+        "State News": [],
+        "Local News": [],
+        "Sports News": [],
+        "Economic News": []
+    }
+
+    for article in articles:
+        article["_id"] = str(article["_id"])  # Convert ObjectId to string
+        category = article.get("category", "").lower()
+
+        if category == "l1":
+            categorized_articles["State News"].append(article)
+        elif category == "l2":
+            categorized_articles["Local News"].append(article)
+        elif category == "sp":
+            categorized_articles["Sports News"].append(article)
+        elif category == "ec":
+            categorized_articles["Economic News"].append(article)
+
+    return jsonify(categorized_articles)
+
 
 @app.route('/article/<oid>', methods=['GET'])
 def get_article_by_id(oid):
