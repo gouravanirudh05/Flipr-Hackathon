@@ -66,5 +66,6 @@ def get_article_by_id(oid):
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 4000))  # Get port from environment, default to 4000
-    app.run(debug=True, port=port)
+    app.run(debug=True, host="0.0.0.0", port=port)
+
 
