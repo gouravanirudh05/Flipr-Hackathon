@@ -5,6 +5,7 @@ const NewsPage = () => {
   const [articles, setArticles] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showTranslation, setShowTranslation] = useState(false);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/articles") // Flask API endpoint
@@ -30,7 +31,15 @@ const NewsPage = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Latest News</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-center">Latest News</h1>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+          onClick={() => setShowTranslation(!showTranslation)}
+        >
+          {showTranslation ? "Show Original" : "Translate"}
+        </button>
+      </div>
 
       {Object.entries(articles).map(([category, categoryArticles]) => (
         <div key={category} className="mb-8">
@@ -44,12 +53,19 @@ const NewsPage = () => {
                 >
                   <Link to={`/article/${article._id}`}>
                     <img
-                      src={article.image || "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202501/677ca3a1294b4-air-india-flight-emergency-landing-074635764-16x9.png?size=948:533"}
+                      src={
+                        article.img_url ||
+                        "https://akm-img-a-in.tosshub.com/businesstoday/images/story/202501/677ca3a1294b4-air-india-flight-emergency-landing-074635764-16x9.png?size=948:533"
+                      }
                       alt={article.title}
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4">
-                      <h2 className="text-xl font-semibold">{article.title}</h2>
+                      <h2 className="text-xl font-semibold">
+                        {showTranslation
+                          ? article.title_translation || "Translation not available"
+                          : article.title}
+                      </h2>
                       <p className="text-gray-600">
                         {article.city}, {article.country}
                       </p>
