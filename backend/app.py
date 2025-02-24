@@ -65,4 +65,6 @@ def get_article_by_id(oid):
         return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 4000))  # Get port from environment, default to 4000
+    app.run(debug=True, port=port)
+
