@@ -6,9 +6,11 @@ const NewsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showTranslation, setShowTranslation] = useState(false);
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/articles") // Flask API endpoint
+    fetch(`${backendUrl}/articles`) // Flask API endpoint
       .then((response) => response.json())
       .then((data) => {
         setArticles(data);
