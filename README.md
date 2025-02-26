@@ -56,9 +56,9 @@ Ensure you have the following installed:
    npm start  # Start React app
 ```
 #### Run the scraper on the google collab notebook below from where the articles will be put to DB
-'''sh
+```sh
 https://colab.research.google.com/drive/1YXB4nOwx8SxMLyanc7Ph4rfXsxwEZ6tX?usp=sharing
-'''
+```
 ## Usage
 
 1. **Run the Web Scraper**: Execute the **Google Colab Notebook** to scrape and store recent news in MongoDB.
